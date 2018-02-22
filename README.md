@@ -132,7 +132,7 @@ $ docker network rm test                                            # Borramos l
 test
 ```
 
-Con la visión "catle" de gestión de elementos (los elementos son "ganado"), siguiendo el ejemplo del vídeo vamos a crear y destruir con "prune" 10 redes
+Con la visión "cattle" de gestión de elementos (los elementos son "ganado"), siguiendo el ejemplo del vídeo vamos a crear y destruir con "prune" 10 redes
 
 ```shell
 $ docker network ls
