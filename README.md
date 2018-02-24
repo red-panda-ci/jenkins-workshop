@@ -66,7 +66,7 @@ $ docker pull hello-world:latest       # Descargamos la imagen dicker del clási
 Cada vez que hacemos "docker pull" de una imagen:
 
 * En caso que imagen no exista en nuestro PC, se descargará del registry
-* Si la imagen ya la tenemos en nuesto PC, comprobará si la está actualizada, descargando la última versión en caso necesario
+* Si la imagen ya la tenemos en nuesto PC, comprobará si está actualizada, descargando la última versión en caso necesario
 
 Podemos indicar una versión concreta a la hora de descargar una imagen:
 
@@ -85,7 +85,7 @@ $ docker pull redpandaci/jenkins-dind:latest    # Equivalente a "docker pull red
 Se pueden considerar "objetos" de la "clase" imagen.
 
 ```bash
-$ docker run --rm hello-world                   # Ejecución del clásico "Hello, World!
+$ docker run hello-world                   # Ejecución del clásico "Hello, World!
 
 [...]
 
