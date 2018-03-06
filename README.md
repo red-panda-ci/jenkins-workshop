@@ -522,13 +522,13 @@ Utilizaremos esta misma "plataforma efímera dockerizada" con docker-compose en 
 
 ## Parte 2: Jenkins
 
-Trabajaremos con un Jenkins dockerizado configurando todo lo necesario para poiner a punto pipelines de CI
+Trabajaremos con un Jenkins dockerizado configurando todo lo necesario para poner a punto pipelines de CI
 
 ### Uso de Docker para montaje de Jenkins en local y dockerizado
 
-Partiendo del proyecto Jenkins DIND https://github.com/red-panda-ci/jenkins-dind se genera esta imagen de docker de docker https://hub.docker.com/r/redpandaci/jenkins-dind/ 
+Partiendo del proyecto Jenkins DIND https://github.com/red-panda-ci/jenkins-dind se genera esta imagen de docker https://hub.docker.com/r/redpandaci/jenkins-dind/ 
 
-Utilizaremos la imagen de docker de Jenkins DIND para montar pipelines de ejemplo a partir de una organización de github. El propio proyecto dispone de un pipeline de CI/CD que cubre build, test, creación y "push" de imagen de docker y gestión de release. Se puede tomar ese archivo.
+Utilizaremos la imagen de docker con Jenkins DIND para montar pipelines de ejemplo a partir de una organización de github. El propio proyecto dispone de un pipeline de CI/CD que cubre build, test, creación y "push" de imagen de docker y gestión de release. Se puede tomar ese archivo.
 
 * Levantamos Jenkins en nuestro PC con Docker
 ```shell
@@ -593,7 +593,7 @@ El usuario / contreaseña de nuestra instalación es "redpanda/redpanda"
 
 ### Creación de proyecto Bitbucket y "Engagement" a Jenkins
 
-La configuración es similar a la organización de Github. Debemos crear un proyecto bitbucket. En el caso de bitbucket podemos crear un proyecto privado con repositorios privados de manera gratuita. El víde no cobre esta parte y se puede experimentar con ello. 
+La configuración es similar a la organización de Github. Debemos crear un proyecto bitbucket. En el caso de bitbucket podemos crear un proyecto privado con repositorios privados de manera gratuita. El vídeo no cobre esta parte y se puede experimentar con ello. 
 
 RETO: crear proyecto Bitbucket y conectarlo a nuestro Jenkins de pruebas.
 
