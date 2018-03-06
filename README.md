@@ -522,15 +522,80 @@ Utilizaremos esta misma "plataforma efímera dockerizada" con docker-compose en 
 
 ## Parte 2: Jenkins
 
+Trabajaremos con un Jenkins dockerizado configurando todo lo necesario para poiner a punto pipelines de CI
+
 ### Uso de Docker para montaje de Jenkins en local y dockerizado
 
+Partiendo del proyecto Jenkins DIND https://github.com/red-panda-ci/jenkins-dind se genera esta imagen de docker de docker https://hub.docker.com/r/redpandaci/jenkins-dind/ 
+
+Utilizaremos la imagen de docker de Jenkins DIND para montar pipelines de ejemplo a partir de una organización de github. El propio proyecto dispone de un pipeline de CI/CD que cubre build, test, creación y "push" de imagen de docker y gestión de release. Se puede tomar ese archivo.
+
+* Levantamos Jenkins en nuestro PC con Docker
+```shell
+$ docker run --privileged --rm -d --name jenkins-dind -e JENKINS_USER=redpanda -e JENKINS_PASS=redpanda -p 8080 redpandaci/jenkins-dind:2.89.4
+Unable to find image 'redpandaci/jenkins-dind:2.89.4' locally
+2.89.4: Pulling from redpandaci/jenkins-dind
+1be7f2b886e8: Pull complete 
+6fbc4a21b806: Pull complete 
+c71a6f8e1378: Pull complete 
+4be3072e5a37: Pull complete 
+06c6d2f59700: Pull complete 
+a93614305743: Pull complete 
+e4144bdc31e8: Pull complete 
+3c8f4870fc59: Pull complete 
+0fa1644eaada: Pull complete 
+f96180a32711: Pull complete 
+ec55146fb59e: Pull complete 
+a15b026a3e3f: Pull complete 
+a32b2dfb0e74: Pull complete 
+ac06df183566: Pull complete 
+9be8a4b72272: Pull complete 
+00d2f25b9939: Pull complete 
+548a9b635033: Pull complete 
+5042fd6bc83e: Pull complete 
+eac30657d62c: Pull complete 
+f50a5064892e: Pull complete 
+Digest: sha256:bde5c5de8c30c4bda31d90552b6e845ed62bc886c808b858b74b6e70c534eca7
+Status: Downloaded newer image for redpandaci/jenkins-dind:2.89.4
+71a1203f7f9c3fb214925c3732a921af8f3048b84a469660bff04b715e221a92
+```
+* Arrancamos el navegador y abrimos el puerto que corresponda (para nuestro caso http://0.0.0.0:32775)
+```shell
+$ docker ps -a
+CONTAINER ID        IMAGE                            COMMAND                  CREATED             STATUS              PORTS                     NAMES
+71a1203f7f9c        redpandaci/jenkins-dind:2.89.4   "wrapdocker java -ja…"   22 seconds ago      Up 21 seconds       0.0.0.0:32775->8080/tcp   jenkins-dind
+``` 
+
+Tan sólo tenemos que acceder con el usuario / contraseña que hemos indicado, en nuestro caso "redpanda/redpanda". Vamos a comentar los parámetros del "docker run":
+
+* --privileged => Utilizamos estrategia "docker in docker", es decir, que nuestro Jenkins dockerizado pueda a su vez correr docker
+* --rm => El container se borrará de forma automática cuando se pare. ¡Cuidado! Al detener el container todos nuestros datos y configuraciones van a desaparecer
+* -d => Ejecución en modo "daemon": nos devuelve el control, se queda ejecutando en segundo plano
+* --name jenkins-dind => Le damos un nombre a nuesgtro container
+* -e JENKINS_USER=redpanda -e JENKINS_PASS=redpanda => Variables de entorno de usuario y contraseña
+* -p 8080 => Cuál es el puerto que vamos a "exponer" en nuestra red. Será mapeado con NAT a un puerto disponible a parti4r del 32767
+* redpandaci/jenkins-dind:2.89.4 => Cuál es la imagen de docker hub de la que vamos a partir para levantar el container. Utilizamos la jenkins-dind:2.89.4, que se corresponde con Jenkins LTS 2.89.4
+
+Las configuraciones de prueba del workshop las vamos a realizar sobre este container recién levantado
+
 ### Configuración y uso de agentes (nodos)
+
+Si enlazamos con el apartado de Docker Compose, podremos ver como tenemos un Jenkins funcionando con dos agentes:
+
+* agent1
+* agent2
+
+El usuario / contreaseña de nuestra instalación es "redpanda/redpanda"
 
 ### Gestión de plugins y configuración
 
 ### Creación de organización Github y "Engagement" a Jenkins
 
-### Creación de projecto Bitbucket y "Engagement" a Jenkins
+### Creación de proyecto Bitbucket y "Engagement" a Jenkins
+
+La configuración es similar a la organización de Github. Debemos crear un proyecto bitbucket. En el caso de bitbucket podemos crear un proyecto privado con repositorios privados de manera gratuita. El víde no cobre esta parte y se puede experimentar con ello. 
+
+RETO: crear proyecto Bitbucket y conectarlo a nuestro Jenkins de pruebas.
 
 ## Parte 3: Pipelines (enlazado con los dos últimos puntos de la parte 2)
 
