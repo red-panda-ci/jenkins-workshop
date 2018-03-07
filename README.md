@@ -418,7 +418,7 @@ $ docker-compsose ps    # Muestra los servicios en ejecución
 $ docker-compose down   # Elimina los servicios. Si añadimos la el parámetro "-v" se eliminan también los volúmenes
 ```
 
-Vamos a utilizar un repositorio de Red Panda para ver el funcionamiento de docker-compose. 
+Vamos a utilizar un repositorio de Red Panda para ver el funcionamiento de docker-compose. Utilizaremos un script del propio repositorio "bin/test.sh"
 
 ```shell
 $ git clone https://github.com/red-panda-ci/jenkins-pipeline-library                            # Clonamnos el repositorio "jenkins-pipeline-library" 
@@ -442,6 +442,7 @@ do so (now or later) by using -b with the checkout command again. Example:
   git checkout -b <new-branch-name>
 
 HEAD is now at 7d27a6f... New: Agent attachment
+
 $ docker-compose ps                                                                             # Verificamos que no hay servicios en la plataforma
 Name   Command   State   Ports
 ------------------------------
@@ -452,22 +453,36 @@ NETWORK ID          NAME                DRIVER              SCOPE
 83cc08e29b76        bridge              bridge              local
 8d0d0aa3be38        host                host                local
 be98665938d5        none                null                local
-$ docker-compose up -d                                                                          # Levantamos plataforma como "daemon" 
+$ bin/test.sh local                                                                             # Levantamos plataforma con el script
+# Start jenkins as a docker-compose daemon
 Creating network "jenkinspipelinelibrary_default" with the default driver
 Creating volume "jenkinspipelinelibrary_jpl-dind-cache" with default driver
 Creating jenkinspipelinelibrary_jenkins-dind_1   ... done
 Creating jenkinspipelinelibrary_jenkins-agent1_1 ... done
 Creating jenkinspipelinelibrary_jenkins-agent2_1 ... done
+# Started platform with id 7383a990deed595fcd413a5691308c1189bcc06e8e523c6627560e78dfa4ad75 and port 0.0.0.0:32772
+# Copy jenkins configuration and prepare code for testing
+fatal: Needed a single revision
+Switched to a new branch 'develop'
+0da8f202679aecefdee812cba3be148e3cf123ec
+Switched to a new branch 'release/v9.9.9'
+Switched to a new branch 'hotfix/v9.9.9-hotfix-1'
+Switched to a new branch 'jpl-test-promoted'
+Switched to a new branch 'jpl-test'
+# Waiting for jenkins service to be initialized
+# Download jenkins cli
+# Prepare agents
+# Reload Jenkins configuration
 $ docker-compose ps                                                                             # Revisamos los servicios de la plataforma en ejecución
                  Name                                Command               State            Ports         
 ----------------------------------------------------------------------------------------------------------
 jenkinspipelinelibrary_jenkins-agent1_1   bash -c tail -f /var/log/*.log   Up                             
 jenkinspipelinelibrary_jenkins-agent2_1   bash -c tail -f /var/log/*.log   Up                             
-jenkinspipelinelibrary_jenkins-dind_1     wrapdocker java -jar /usr/ ...   Up      0.0.0.0:32771->8080/tcp
+jenkinspipelinelibrary_jenkins-dind_1     wrapdocker java -jar /usr/ ...   Up      0.0.0.0:32772->8080/tcp
 $ docker ps                                                                                     # Revisamos los containers que se han creado
 CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                     NAMES
 1833d2576f67        jenkins/jnlp-slave        "bash -c 'tail -f /v…"   7 seconds ago       Up 5 seconds                                  jenkinspipelinelibrary_jenkins-agent2_1
-feb35fd347dc        redpandaci/jenkins-dind   "wrapdocker java -ja…"   7 seconds ago       Up 5 seconds        0.0.0.0:32771->8080/tcp   jenkinspipelinelibrary_jenkins-dind_1
+feb35fd347dc        redpandaci/jenkins-dind   "wrapdocker java -ja…"   7 seconds ago       Up 5 seconds        0.0.0.0:32772->8080/tcp   jenkinspipelinelibrary_jenkins-dind_1
 1ad4efe33b53        jenkins/jnlp-slave        "bash -c 'tail -f /v…"   7 seconds ago       Up 4 seconds                                  jenkinspipelinelibrary_jenkins-agent1_1
 $ docker volume ls                                                                              # Revisamos los volúmenes que se han creado
 DRIVER              VOLUME NAME
