@@ -522,11 +522,11 @@ Utilizaremos esta misma "plataforma efímera dockerizada" con docker-compose en 
 
 ## Parte 2: Jenkins
 
-Trabajaremos con un Jenkins dockerizado configurando todo lo necesario para poiner a punto pipelines de CI
+Trabajaremos con un Jenkins dockerizado configurando todo lo necesario para poner a punto pipelines de CI
 
 ### Uso de Docker para montaje de Jenkins en local y dockerizado
 
-Partiendo del proyecto Jenkins DIND https://github.com/red-panda-ci/jenkins-dind se genera esta imagen de docker de docker https://hub.docker.com/r/redpandaci/jenkins-dind/ 
+Partiendo del proyecto Jenkins DIND https://github.com/red-panda-ci/jenkins-dind se genera esta imagen de docker https://hub.docker.com/r/redpandaci/jenkins-dind/ 
 
 Utilizaremos la imagen de docker de Jenkins DIND para montar pipelines de ejemplo a partir de una organización de github. El propio proyecto dispone de un pipeline de CI/CD que cubre build, test, creación y "push" de imagen de docker y gestión de release. Se puede tomar ese archivo.
 
@@ -589,7 +589,24 @@ El usuario / contreaseña de nuestra instalación es "redpanda/redpanda"
 
 ### Gestión de plugins y configuración
 
+La image Docker jenkins-dind con la que estamos trabajando tiene instalados todos los plugins necesarios para ejecutar los pipelines de los ejemplos. Se puede revisar la lista de plugins instalados accediendo en el menú de la izquierda en "Manage Jenkins -> Manage Plugins".
+La configuración está accesible en "Manage Jenkins -> Configure System". Sobre este apartado de configuración es necesario realizar un ajuste en configuración para que los pipelines del ejemplo funcionen correctamente: se tiene que añadir el label "docker". 
+
+* Accedemos a "Manage Jenkins -> Configure System"
+* Buscamos el campo "Labels", que debe estar vacío, y ponemos "docker"
+* Pulsamos en "Save"
+
 ### Creación de organización Github y "Engagement" a Jenkins
+
+Tenemos dos opciones para configurar proyectos en nuestro Jenkins: hacerlo uno por uno, repositorio a repositorio, o configurar una organización de Github completa. Cada método tiene sus ventajas e inconvenientes; trabajando con repositorios individuales tenemos configuración más granular, mientras que si lo hacemos a nivel organización únicamente tenemos que configurar una vez, y nos olvidamos.
+
+Traajando a nivel organización tenddremos:
+
+* Configuración única
+* "Engagement" de todos los repositorios de la organización que tengan "Jenkinsfile". Se revisan todas las ramas de todos los repositorios, y se crea un "Job" para cada rama
+* Añadiendo un webhook en Github tendremos también auto-engagement de repositorios nuevos que tengan un fichero "Jenkinsfile" versionado
+
+TBD (pasos técnicos)
 
 ### Creación de proyecto Bitbucket y "Engagement" a Jenkins
 
