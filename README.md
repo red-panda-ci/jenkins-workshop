@@ -612,7 +612,7 @@ La image Docker jenkins-dind con la que estamos trabajando tiene instalados todo
 La configuración está accesible en "Manage Jenkins -> Configure System". Sobre este apartado de configuración es necesario realizar un ajuste en configuración para que los pipelines del ejemplo funcionen correctamente: se tiene que añadir el label "docker". 
 
 * Accedemos a "Manage Jenkins -> Configure System"
-* Buscamos el campo "Labels", que debe estar vacío, y ponemos "docker"
+* Buscamos el campo "Labels", que encontraremos vacío, y ponemos "docker"
 * Pulsamos en "Save"
 
 ### Creación de organización Github y "Engagement" a Jenkins
@@ -645,11 +645,28 @@ Si todo ha ido bien tendremos una copia (fork) del repositorio en nuestra organi
 
 **Tercer paso**: Creamos un proyecto nuevo en nuestro Jenkins "enganchado" a la organización Github
 
-TBD
+Embarcamos la organización Github en nuestro Jenkins efímero dockerizado:
+
+* Abrimos la URL de Jenkins http://0.0.0.0:32775 y accedemos con "redpanda/redpanda"
+* Pulsamos sobre "New item" en el menú de la izquierda
+* En la página de "New item"
+  * Introducimos el nombre de la organización github en la caja de texto ("jenkins-workshop-gigigo" para nuestro ejemplo)
+  * Seleccionamos "GitHub Organization" (penúltimo elemento)
+  * Pulsamos sobre "OK". Se creará el item y veremos la página de propiedades de la organización
+* En la página de propiedades de la organización:
+  * Añadimos nuestro usuario / contrraseña de Github en el apartado "Projects":
+    * Seleccionamos el botón "Add" en "Credentials" (vemos que hay un desplegable que pone "-none-") y escogemos la primera opción ("jenkins-workshop-gigigo" en nuestro ejemplo)
+    * Rellenamos usuario / contraseña con nuestras credenciales de Github y ponemos un texto descriptivo en ID, por ejemplo "github"
+    * Al pulsar sobre "Add" volvemos a la página de propiedades, pero esta vez al desplegar en "Credentials" veremos la que acabamos de añadir. Seleccionamos esa.
+    * Elegimos qué ramas van a disparar un "build": en la parte de abajo de la página hay una opción "Automatic branch project triggering" con una caja de texto, que rellenamos con "develop". De esta forma tendremos vigilada la rama develop de los repositorios. Para nuestro ejemplo es suficiente, en casos reales tendremos que incluir más ramas, o todas las ramas
+
+Vamos a dejar el resto de opciones tal cual, y pulsamos en "Save" en la parte de abajo de la página para guardar los cambios. En ese momento Jenkins revisa todos los repositorios de la organización, buscando aquellos que tengan un archivo Jenkinsfile en cada una de las ramas vigiladas (recordemos: únicamente la rama "develop"). Para cada repositorio que cumpla con los criterios creará un "job" nuevo en cada rama que tenga archivo Jenkinsfile y ejecutará un "build"; en nuestro caso del ejemplo Jenkins se encontrará con el proyecto "testlenium".
+
+En la parte de abajo a la izquierda de la página veremos "Build Executor Status" con un build en ejecución. Si pinchamos sobre él veremos el build en mientras se ejecuta, pudiendo acceder a la consola (Console Output de la izquierda), o bien podremos pinchar sobre "Open Blue Ocean" para tener una visión con esa interfaz. Sólo tendremos que esperar a que el build finalice para tener como artefactos vídeos de ejecución de los test, tal y como está programado realizarse por el Jenkinsfile del proyecto.
 
 **Cuarto paso**: Configuramos un "hook" a nivel organización
 
-Jenkins habrá puesto un Webhook apuntando a la URL del jenkins dockerizado (en nuestro ejemplo http://0.0.0.0:32775/github-webhook/). Si somos capaces de llevar tráfico HTTP al servicio Jenkins dockerizado, cuando sucedan eventos en la organización, como un push, creación de un pull request o creación de un repositorio, Github "llamará" a nuestro Jenkins para que se ponga a trabajar.
+Verificamos que Jenkins ha añadido un Webhook a nuestra organización apuntando a la URL del jenkins dockerizado (en nuestro ejemplo http://0.0.0.0:32775/github-webhook/). Si somos capaces de llevar tráfico HTTP al servicio Jenkins dockerizado, cuando sucedan eventos en la organización, como un push, creación de un pull request o creación de un repositorio, Github "llamará" a nuestro Jenkins para que se ponga a trabajar. Esta información la vemos accediendo a la organización Github desde el navegador, y pulsando en "Settings" => "Webhook"
 
 Debido a la naturaleza de este taller (Jenkins efímero, dockerizado) no vamos a entrar en detalles de cómo hacerlo. Tendremos que buscar nosotros los cambios de forma explícita desde nuestro Jenkins. Es decir: usar una y otra vez la opción "Scan".
 
