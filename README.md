@@ -2,6 +2,10 @@
 
 Guía de la charla acerca de Jenkins y entregabilidad https://youtu.be/rpyTevjM3X4
 
+Debido a que el texto se compuso durante los días posteriores a la charla es posible que el contenido de esta guía difiera del contenido del vídeo. Por temas prácticos utilizaremos de forma deliberada repositorios distintos en la guía para las pruebas.
+
+Pido disculpas por ello.
+
 ## Parte 1: Docker
 
 Utilizaremos Docker para gestionar builds, test y en último término plataformado y operación de entornos.
@@ -613,15 +617,41 @@ La configuración está accesible en "Manage Jenkins -> Configure System". Sobre
 
 ### Creación de organización Github y "Engagement" a Jenkins
 
-Tenemos dos opciones para configurar proyectos en nuestro Jenkins: hacerlo uno por uno, repositorio a repositorio, o configurar una organización de Github completa. Cada método tiene sus ventajas e inconvenientes; trabajando con repositorios individuales tenemos configuración más granular, mientras que si lo hacemos a nivel organización únicamente tenemos que configurar una vez, y nos olvidamos.
+Tenemos dos opciones para configurar proyectos en nuestro Jenkins: hacerlo uno por uno, repositorio a repositorio, o configurar una organización de Github completa. Cada método tiene sus ventajas e inconvenientes; trabajando con repositorios individuales tenemos configuración más granular, mientras que si lo hacemos a nivel organización únicamente tenemos que configurar una única vez.
 
-Traajando a nivel organización tenddremos:
+Trabajando a "nivel organización github" tendremos:
 
 * Configuración única
 * "Engagement" de todos los repositorios de la organización que tengan "Jenkinsfile". Se revisan todas las ramas de todos los repositorios, y se crea un "Job" para cada rama
 * Añadiendo un webhook en Github tendremos también auto-engagement de repositorios nuevos que tengan un fichero "Jenkinsfile" versionado
 
-TBD (pasos técnicos)
+**Primer paso**: Crear una organización en Github
+
+* Accedemos a github con nuestro usuario. En caso de no disponer de usuario de github se puede dar de alta un nuevo usuario de forma gratuita.
+* En la página principal de nuestra cuenta pulsamos sobre el "+" en la parte superior derecha. Seleccionamos "New organization"
+* Rellenamos los datos de la nueva organización
+  * Una nombre que nos parezca adecuado y no esté adecuado. Para nuestro ejemplo será "jenkins-workshop-gigigo"
+  * Una dirección de mail en "Billing address". Esto no implica coste si seleccionamos la opción "Free"
+* Pulsamos sobre "Create organization"
+
+**Segundo paso**: Añadimos un repositorio a nuestra organización
+
+Haremos "fork" del proyecto "testlenium"
+
+* Abrimos la URL https://github.com/red-panda-ci/testlenium en el navegador
+* Pulsamos sobre "Fork" y seleccionamos la organización que acabamos de crear (en el caso del ejemplo "jenkins-workshop-gigigo")
+
+Si todo ha ido bien tendremos una copia (fork) del repositorio en nuestra organización https://github.com/jenkins-workshop-gigigo/testlenium
+
+**Tercer paso**: Creamos un proyecto nuevo en nuestro Jenkins "enganchado" a la organización Github
+
+TBD
+
+**Cuarto paso**: Configuramos un "hook" a nivel organización
+
+Jenkins habrá puesto un Webhook apuntando a la URL del jenkins dockerizado (en nuestro ejemplo http://0.0.0.0:32775/github-webhook/). Si somos capaces de llevar tráfico HTTP al servicio Jenkins dockerizado, cuando sucedan eventos en la organización, como un push, creación de un pull request o creación de un repositorio, Github "llamará" a nuestro Jenkins para que se ponga a trabajar.
+
+Debido a la naturaleza de este taller (Jenkins efímero, dockerizado) no vamos a entrar en detalles de cómo hacerlo. Tendremos que buscar nosotros los cambios de forma explícita desde nuestro Jenkins. Es decir: usar una y otra vez la opción "Scan".
 
 ### Creación de proyecto Bitbucket y "Engagement" a Jenkins
 
