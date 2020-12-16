@@ -1,10 +1,11 @@
-<a name="0.1.0"></a>
-# 0.1.0 (2018-03-08)
+<a name="1.0.0"></a>
+# 1.0.0 (2018-03-08)
 
 
 ### Build
 
 * Add Jenkinsfile ([0fb257a199b5de89536a6960b8478d4dcbe84953](https://github.com/red-panda-ci/jenkins-workshop/commit/0fb257a199b5de89536a6960b8478d4dcbe84953))
+* Update CHANGELOG.md to v0.1.0 with Red Panda JPL ([0cc0e34269bafba47f0b7ca9d24446597a63bbf0](https://github.com/red-panda-ci/jenkins-workshop/commit/0cc0e34269bafba47f0b7ca9d24446597a63bbf0))
 
 ### Docs
 
