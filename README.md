@@ -34,7 +34,7 @@ Como ${item} podemos usar:
 * network
 * volume
 
-Tenemos sistaxis específicas para elementos concretos, por ejemplo son equivalentes:
+Tenemos sintaxis específicas para elementos concretos, por ejemplo son equivalentes:
 
 ```bash
 $ docker ps -a              # Equivalente a "docker container ls -a"
@@ -58,7 +58,7 @@ $ docker help container ps  # Listado de opciones de "docker container ps"
 
 #### Imágenes
 
-Podemos considerarlo como plantillas que tomaremos de base para ejecutar containers. en los ejemplos trabajaremos con el registry "docker hub".
+Podemos considerarlo como plantillas que tomaremos de base para ejecutar containers. En los ejemplos trabajaremos con el registry "docker hub".
 
 Un registry es un repositorio público donde guardaremos nuestras imágenes.
 
